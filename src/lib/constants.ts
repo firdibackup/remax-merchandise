@@ -24,6 +24,23 @@ export function withBasePath(path: string): string {
   return `${BASE_PATH}${path}`;
 }
 
+/**
+ * Absolute OAuth redirect target for Supabase `signInWithOAuth`.
+ *
+ * Supabase redirects the browser to this URL verbatim — it never learns about
+ * {@link BASE_PATH}, so the prefix must be baked in here or Google lands the
+ * user on `/auth/callback`, which does not exist under the sub-path (404).
+ * Whatever origin the user logged in from (remax.co.id or the Vercel domain) is
+ * the one we come back to, so it is passed in rather than hardcoded.
+ *
+ * The resulting URL must also be listed verbatim in Supabase → Authentication →
+ * URL Configuration → Redirect URLs.
+ */
+export function authCallbackUrl(origin: string, next: string): string {
+  const safeNext = next.startsWith("/") ? next : "/";
+  return `${origin}${withBasePath("/auth/callback")}?next=${encodeURIComponent(safeNext)}`;
+}
+
 export const SITE_NAME = "REMAX Gifts";
 
 export const SITE_DESCRIPTION =

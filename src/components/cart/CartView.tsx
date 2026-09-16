@@ -16,6 +16,7 @@ import { Breadcrumb } from "@/components/layout/Breadcrumb";
 import { GoogleIcon } from "@/components/ui/GoogleIcon";
 import { useShipping } from "@/hooks/useShipping";
 import { categoryName } from "@/lib/catalog";
+import { authCallbackUrl } from "@/lib/constants";
 import { formatEstimation, formatKg, formatPrice } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/client";
@@ -86,7 +87,7 @@ export function CartView({
     await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
-        redirectTo: `${window.location.origin}/auth/callback?next=/cart`,
+        redirectTo: authCallbackUrl(window.location.origin, "/cart"),
       },
     });
   }

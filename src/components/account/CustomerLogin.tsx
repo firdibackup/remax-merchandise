@@ -6,7 +6,7 @@ import Link from "next/link";
 import * as React from "react";
 
 import { GoogleIcon } from "@/components/ui/GoogleIcon";
-import { withBasePath } from "@/lib/constants";
+import { authCallbackUrl, withBasePath } from "@/lib/constants";
 import { createClient } from "@/lib/supabase/client";
 
 export function CustomerLogin({ next }: { next: string }): React.JSX.Element {
@@ -18,7 +18,7 @@ export function CustomerLogin({ next }: { next: string }): React.JSX.Element {
     await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
-        redirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(next)}`,
+        redirectTo: authCallbackUrl(window.location.origin, next),
       },
     });
   }
