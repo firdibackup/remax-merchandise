@@ -2,6 +2,8 @@
 
 import * as React from "react";
 
+import { withBasePath } from "@/lib/constants";
+
 import type { ActionResult } from "@/types/action";
 import type {
   RegionOption,
@@ -190,7 +192,7 @@ export function useShipping(
       setRatesStatus("loading");
       setError("");
       try {
-        const res = await fetch("/api/shipping/cost", {
+        const res = await fetch(withBasePath("/api/shipping/cost"), {
           method: "POST",
           headers: { "content-type": "application/json" },
           body: JSON.stringify({
@@ -242,7 +244,9 @@ export function useShipping(
         setRatesStatus("idle");
         if (option) {
           setLoading((l) => ({ ...l, regency: true }));
-          getRegions(`/api/regional/regencies?province=${option.code}`)
+          getRegions(
+            withBasePath(`/api/regional/regencies?province=${option.code}`),
+          )
             .then(setRegencies)
             .catch(() => setError("Gagal memuat kota/kabupaten"))
             .finally(() => setLoading((l) => ({ ...l, regency: false })));
@@ -255,7 +259,9 @@ export function useShipping(
         setRatesStatus("idle");
         if (option) {
           setLoading((l) => ({ ...l, district: true }));
-          getRegions(`/api/regional/districts?regency=${option.code}`)
+          getRegions(
+            withBasePath(`/api/regional/districts?regency=${option.code}`),
+          )
             .then(setDistricts)
             .catch(() => setError("Gagal memuat kecamatan"))
             .finally(() => setLoading((l) => ({ ...l, district: false })));
@@ -267,7 +273,9 @@ export function useShipping(
         setRatesStatus("idle");
         if (option) {
           setLoading((l) => ({ ...l, village: true }));
-          getRegions(`/api/regional/villages?district=${option.code}`)
+          getRegions(
+            withBasePath(`/api/regional/villages?district=${option.code}`),
+          )
             .then(setVillages)
             .catch(() => setError("Gagal memuat desa/kelurahan"))
             .finally(() => setLoading((l) => ({ ...l, village: false })));

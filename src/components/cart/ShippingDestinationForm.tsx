@@ -36,6 +36,7 @@ export function ShippingDestinationForm({
     setRecipientName,
     setRecipientPhone,
     setAddressDetail,
+    error,
   } = shipping;
 
   return (
@@ -111,6 +112,12 @@ export function ShippingDestinationForm({
             onSelect={selectRegion}
           />
         </div>
+
+        {error ? (
+          <p role="alert" className="text-[13px] font-semibold text-danger">
+            {error}. Coba pilih ulang wilayah di atas.
+          </p>
+        ) : null}
 
         <label className="flex flex-col gap-1.5">
           <span className={LABEL}>Alamat Lengkap</span>
