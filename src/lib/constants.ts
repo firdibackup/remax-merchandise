@@ -7,7 +7,7 @@ export const WA_NUMBER: string =
   process.env.NEXT_PUBLIC_WA_NUMBER ?? "6287716289585";
 
 export const SITE_URL: string =
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://remax-merchandise.vercel.app";
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://remax.co.id/gifts";
 
 /**
  * Deployment sub-path. The app is served under this prefix (remax.co.id/gifts),
