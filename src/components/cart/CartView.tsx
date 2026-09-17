@@ -1,6 +1,13 @@
 "use client";
 
-import { CreditCard, Info, Lock, ShoppingCart, Trash2 } from "lucide-react";
+import {
+  CreditCard,
+  Info,
+  Lock,
+  LogIn,
+  ShoppingCart,
+  Trash2,
+} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -13,15 +20,18 @@ import { CheckoutAddressBook } from "@/components/cart/CheckoutAddressBook";
 import { ShippingDestinationForm } from "@/components/cart/ShippingDestinationForm";
 import { ShippingRateCard } from "@/components/cart/ShippingRateCard";
 import { Breadcrumb } from "@/components/layout/Breadcrumb";
-import { GoogleIcon } from "@/components/ui/GoogleIcon";
 import { useShipping } from "@/hooks/useShipping";
 import { categoryName } from "@/lib/catalog";
-import { authCallbackUrl } from "@/lib/constants";
 import { formatEstimation, formatKg, formatPrice } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/client";
 import { cartMessage, waLink } from "@/lib/whatsapp";
-import { lineKey, lineUnitPrice, useCart, type CartLine } from "@/providers/CartProvider";
+import {
+  lineKey,
+  lineUnitPrice,
+  useCart,
+  type CartLine,
+} from "@/providers/CartProvider";
 
 import type { CustomerAddress } from "@/types/address";
 import type { RegionOption } from "@/types/shipping";
@@ -57,11 +67,14 @@ export function CartView({
     sessionId,
   } = useCart();
   const router = useRouter();
-  const defaultAddress = savedAddresses.find((a) => a.isDefault) ?? savedAddresses[0] ?? null;
+  const defaultAddress =
+    savedAddresses.find((a) => a.isDefault) ?? savedAddresses[0] ?? null;
   const [addressMode, setAddressMode] = React.useState<"saved" | "new">(
     defaultAddress ? "saved" : "new",
   );
-  const [selectedAddressId, setSelectedAddressId] = React.useState(defaultAddress?.id ?? "");
+  const [selectedAddressId, setSelectedAddressId] = React.useState(
+    defaultAddress?.id ?? "",
+  );
   const [checkingOut, setCheckingOut] = React.useState(false);
   const shipping = useShipping(
     initialProvinces,
@@ -81,16 +94,6 @@ export function CartView({
       (shipping.ratesStatus === "idle" && !!shipping.selected.village));
   const checkoutReady =
     !!shipping.destination && !quoting && (!!shipping.rate || manualOngkir);
-
-  async function handleGoogleLogin(): Promise<void> {
-    const supabase = createClient();
-    await supabase.auth.signInWithOAuth({
-      provider: "google",
-      options: {
-        redirectTo: authCallbackUrl(window.location.origin, "/cart"),
-      },
-    });
-  }
 
   async function handleSignOut(): Promise<void> {
     await createClient().auth.signOut();
@@ -232,14 +235,16 @@ export function CartView({
                     {line.variant &&
                       Object.keys(line.variant.options).length > 0 && (
                         <div className="mt-1 mb-0.5 flex flex-wrap gap-1.5">
-                          {Object.entries(line.variant.options).map(([k, v]) => (
-                            <span
-                              key={k}
-                              className="inline-flex items-center rounded-pill bg-surface-soft px-2.5 py-0.5 text-[11.5px] font-semibold text-body"
-                            >
-                              {k}: {v}
-                            </span>
-                          ))}
+                          {Object.entries(line.variant.options).map(
+                            ([k, v]) => (
+                              <span
+                                key={k}
+                                className="inline-flex items-center rounded-pill bg-surface-soft px-2.5 py-0.5 text-[11.5px] font-semibold text-body"
+                              >
+                                {k}: {v}
+                              </span>
+                            ),
+                          )}
                         </div>
                       )}
                     <div className="text-[13px] text-muted">
@@ -259,7 +264,9 @@ export function CartView({
                             stock > 0 ? "text-green-600" : "text-red-500",
                           )}
                         >
-                          {stock > 0 ? `Stok tersedia: ${stock} pcs` : "Stok habis"}
+                          {stock > 0
+                            ? `Stok tersedia: ${stock} pcs`
+                            : "Stok habis"}
                         </div>
                       );
                     })()}
@@ -355,8 +362,14 @@ export function CartView({
                   Ringkasan Checkout
                 </h3>
                 <SummaryRow label="Jumlah jenis produk" value={String(count)} />
-                <SummaryRow label="Estimasi total qty" value={`${totalQty} pcs`} />
-                <SummaryRow label="Subtotal produk" value={formatPrice(estimatedTotal)} />
+                <SummaryRow
+                  label="Estimasi total qty"
+                  value={`${totalQty} pcs`}
+                />
+                <SummaryRow
+                  label="Subtotal produk"
+                  value={formatPrice(estimatedTotal)}
+                />
                 <SummaryRow
                   label="Ongkir JNE Express"
                   value={
@@ -372,7 +385,9 @@ export function CartView({
                   }
                 />
                 <div className="flex items-center justify-between pt-4 pb-1">
-                  <span className="text-[14.5px] font-semibold text-ink">Total</span>
+                  <span className="text-[14.5px] font-semibold text-ink">
+                    Total
+                  </span>
                   <span className="font-mono text-xl font-extrabold text-brand">
                     {formatPrice(grandTotal)}
                   </span>
@@ -417,17 +432,16 @@ export function CartView({
                         ? "Menghitung ongkir…"
                         : manualOngkir && !shipping.rate
                           ? "Checkout (Ongkir Manual)"
-                          : "Checkout & Kirim WhatsApp"}
+                          : "Checkout"}
                   </button>
                 ) : (
-                  <button
-                    type="button"
-                    onClick={() => void handleGoogleLogin()}
+                  <Link
+                    href="/account/login?next=/cart"
                     className="inline-flex h-14 items-center justify-center gap-2.5 rounded-btn bg-brand text-[16.5px] font-medium text-white shadow-cta hover:bg-brand-hover"
                   >
-                    <GoogleIcon className="h-[19px] w-[19px]" />
-                    Login dengan Google untuk Checkout
-                  </button>
+                    <LogIn className="h-[20px] w-[20px]" />
+                    Login untuk Checkout
+                  </Link>
                 )}
                 <Link
                   href="/search"
@@ -439,7 +453,9 @@ export function CartView({
                   <div className="mt-1 flex flex-wrap items-center justify-center gap-1.5 text-[12.5px] text-muted">
                     <span className="truncate">
                       Masuk sebagai{" "}
-                      <span className="font-semibold text-body">{userEmail}</span>
+                      <span className="font-semibold text-body">
+                        {userEmail}
+                      </span>
                     </span>
                     <span aria-hidden>·</span>
                     <button

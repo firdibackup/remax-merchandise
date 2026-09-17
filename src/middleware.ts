@@ -4,11 +4,23 @@ import { isAdminEmail } from "@/lib/auth";
 import { updateSession } from "@/lib/supabase/middleware";
 
 /**
+ * Customer account routes that must stay reachable while logged out — the
+ * email/password auth entry points. Everything else under `/account/*` requires
+ * a session (incl. `/account/reset-password`, which relies on the temporary
+ * recovery session set by `/auth/confirm`).
+ */
+const PUBLIC_ACCOUNT_PATHS: ReadonlySet<string> = new Set([
+  "/account/login",
+  "/account/register",
+  "/account/forgot-password",
+]);
+
+/**
  * Keeps the Supabase session fresh on every request and guards the admin panel
  * plus the customer account area. The admin panel (`/admin/*`, except the
  * `/admin` login page) is restricted to allowlisted admin emails; authenticated
  * admins are bounced off the login page. The customer area (`/account/*`, except
- * `/account/login`) requires any logged-in user.
+ * the {@link PUBLIC_ACCOUNT_PATHS} auth pages) requires any logged-in user.
  */
 export async function middleware(request: NextRequest): Promise<NextResponse> {
   const { user, response } = await updateSession(request);
@@ -24,7 +36,7 @@ export async function middleware(request: NextRequest): Promise<NextResponse> {
 
   if (
     pathname.startsWith("/account") &&
-    pathname !== "/account/login" &&
+    !PUBLIC_ACCOUNT_PATHS.has(pathname) &&
     !user
   ) {
     return redirectTo(request, "/account/login", response, { next: pathname });

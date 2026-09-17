@@ -399,9 +399,9 @@ refactor: extract ProductCard into reusable component
 - [x] Customer order history (/account/orders) + profile edit (/account/profile, stored in Supabase Auth user metadata)
 - [x] Navbar account menu (login icon / avatar dropdown / logout)
 - [x] Admin order confirmation with atomic stock decrement (Supabase)
+- [x] Customer email/password auth alongside Google: sign in, register (with email verification), and password reset via Supabase (`/account/login`, `/account/register`, `/account/forgot-password`, `/account/reset-password`, `/auth/confirm`)
 
 # Out of scope â€” do not implement
-- Customer email/password register or password reset (Google OAuth only)
 - Payment gateway / online payment
 - Shipping / fulfillment / delivery tracking
 - Wishlist, product reviews, blog
@@ -489,7 +489,6 @@ If a prompt or instruction is ambiguous, **ask first before coding**. Do not ass
 
 # Scope
 - Never implement a payment gateway or online payment
-- Never implement email/password customer register or password reset (Google OAuth only)
 - Never implement shipping / fulfillment / delivery tracking
 - Never implement wishlist or product reviews
 - Enforce the "Out of Scope" list strictly â€” new features go in a separate PRD

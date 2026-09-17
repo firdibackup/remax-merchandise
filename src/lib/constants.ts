@@ -41,6 +41,23 @@ export function authCallbackUrl(origin: string, next: string): string {
   return `${origin}${withBasePath("/auth/callback")}?next=${encodeURIComponent(safeNext)}`;
 }
 
+/**
+ * Absolute redirect target for email-link flows: signup confirmation
+ * (`signUp` → `emailRedirectTo`) and password recovery
+ * (`resetPasswordForEmail` → `redirectTo`).
+ *
+ * Points at `/auth/confirm`, which establishes the session (via either the
+ * `token_hash` OTP or the PKCE `code`) before forwarding to `next`. As with
+ * {@link authCallbackUrl} the {@link BASE_PATH} prefix must be baked in — Supabase
+ * uses this URL verbatim and knows nothing about the sub-path — and the resulting
+ * URL must be listed under Supabase → Authentication → URL Configuration →
+ * Redirect URLs.
+ */
+export function authConfirmUrl(origin: string, next: string): string {
+  const safeNext = next.startsWith("/") ? next : "/";
+  return `${origin}${withBasePath("/auth/confirm")}?next=${encodeURIComponent(safeNext)}`;
+}
+
 export const SITE_NAME = "REMAX Gifts";
 
 export const SITE_DESCRIPTION =

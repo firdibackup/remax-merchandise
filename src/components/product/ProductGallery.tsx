@@ -86,7 +86,8 @@ export function ProductGallery({
           alt={alt}
           fill
           priority
-          sizes="(max-width: 1820px) 100vw, 600px"
+          quality={90}
+          sizes="(max-width: 1024px) 100vw, 600px"
           style={{ transformOrigin: origin }}
           className="object-cover transition-transform duration-200 ease-out group-hover:scale-[1.75]"
         />
@@ -282,6 +283,7 @@ function GalleryLightbox({
             src={images[index]}
             alt={`${alt} — foto ${index + 1}`}
             fill
+            quality={90}
             sizes="(max-width: 640px) 100vw, 920px"
             style={zoomed ? { transformOrigin: origin } : undefined}
             className={cn(
