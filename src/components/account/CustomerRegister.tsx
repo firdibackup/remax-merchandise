@@ -222,7 +222,7 @@ export function CustomerRegister({
           <span className="h-px flex-1 bg-gray-200" />
         </div>
 
-        {/* <button
+        <button
           type="button"
           onClick={() => void handleGoogleLogin()}
           disabled={googlePending}
@@ -230,7 +230,7 @@ export function CustomerRegister({
         >
           <GoogleIcon className="h-[19px] w-[19px]" />
           {googlePending ? "Mengalihkan…" : "Daftar dengan Google"}
-        </button> */}
+        </button>
 
         <p className="mt-6 text-center text-[13.5px] text-gray-500">
           Sudah punya akun?{" "}
