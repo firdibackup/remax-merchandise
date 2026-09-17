@@ -23,7 +23,6 @@ import { Breadcrumb } from "@/components/layout/Breadcrumb";
 import { useShipping } from "@/hooks/useShipping";
 import { categoryName } from "@/lib/catalog";
 import { formatEstimation, formatKg, formatPrice } from "@/lib/format";
-import { cn } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/client";
 import { cartMessage, waLink } from "@/lib/whatsapp";
 import {
@@ -254,22 +253,6 @@ export function CartView({
                       </span>
                       /pcs
                     </div>
-                    {(() => {
-                      const stock = lineStock(line);
-                      if (stock === null) return null;
-                      return (
-                        <div
-                          className={cn(
-                            "mt-1 text-[12px] font-semibold",
-                            stock > 0 ? "text-green-600" : "text-red-500",
-                          )}
-                        >
-                          {stock > 0
-                            ? `Stok tersedia: ${stock} pcs`
-                            : "Stok habis"}
-                        </div>
-                      );
-                    })()}
                   </div>
 
                   <div className="flex flex-col items-end gap-2.5">

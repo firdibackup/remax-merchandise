@@ -64,16 +64,22 @@ export function QuickAddSheet({
     }
     let active = true;
     setStatus("loading");
-    void getProductOptions(product.slug).then((res) => {
-      if (!active) return;
-      if (res.success && res.data) {
-        setDetail(res.data);
-        loadedSlug.current = product.slug;
-        setStatus("ready");
-      } else {
-        setStatus("error");
-      }
-    });
+    void getProductOptions(product.slug)
+      .then((res) => {
+        if (!active) return;
+        if (res.success && res.data) {
+          setDetail(res.data);
+          loadedSlug.current = product.slug;
+          setStatus("ready");
+        } else {
+          setStatus("error");
+        }
+      })
+      .catch(() => {
+        // Never leave a rejected action unhandled — show the graceful error
+        // state (with a link to the product page) instead of an uncaught error.
+        if (active) setStatus("error");
+      });
     return () => {
       active = false;
     };
@@ -268,21 +274,10 @@ export function QuickAddSheet({
                 </div>
               ) : (
                 <>
-                  {/* Stock / availability */}
+                  {/* Option availability */}
                   {hasVariants && !variant ? (
                     <div className="mb-4 text-[13px] font-semibold text-red-500">
                       Kombinasi tidak tersedia
-                    </div>
-                  ) : selectionStock !== null ? (
-                    <div
-                      className={cn(
-                        "mb-4 text-[13px] font-semibold",
-                        selectionStock > 0 ? "text-green-600" : "text-red-500",
-                      )}
-                    >
-                      {selectionStock > 0
-                        ? `Stok tersedia: ${selectionStock} pcs`
-                        : "Stok habis"}
                     </div>
                   ) : null}
 

@@ -86,8 +86,7 @@ export function ProductGallery({
           alt={alt}
           fill
           priority
-          quality={90}
-          sizes="(max-width: 1024px) 100vw, 600px"
+          sizes="(max-width: 1820px) 100vw, 600px"
           style={{ transformOrigin: origin }}
           className="object-cover transition-transform duration-200 ease-out group-hover:scale-[1.75]"
         />

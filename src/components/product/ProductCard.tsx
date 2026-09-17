@@ -11,7 +11,6 @@ import { useCheckout } from "@/hooks/useCheckout";
 import { categoryName } from "@/lib/catalog";
 import { BADGE_LABELS } from "@/lib/data/catalog";
 import { formatPrice } from "@/lib/format";
-import { cn } from "@/lib/utils";
 import { useCart } from "@/providers/CartProvider";
 import type { Product } from "@/types/product";
 
@@ -48,8 +47,7 @@ export function ProductCard({ product }: { product: Product }): ReactElement {
               src={product.imageUrl}
               alt={product.name}
               fill
-              quality={90}
-              sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+              sizes="(max-width: 1068px) 50vw, (max-width: 1800px) 25vw, 300px"
               className="object-cover transition-transform duration-300 group-hover:scale-[1.04]"
             />
           ) : (
@@ -82,16 +80,6 @@ export function ProductCard({ product }: { product: Product }): ReactElement {
             {formatPrice(product.price)}
           </span>
         </div>
-        {product.stock !== null && (
-          <div
-            className={cn(
-              "mt-1 text-[12px] font-semibold",
-              product.stock > 0 ? "text-green-600" : "text-red-500",
-            )}
-          >
-            {product.stock > 0 ? `Stok: ${product.stock} pcs` : "Stok Habis"}
-          </div>
-        )}
         <div className="mt-3 flex gap-2">
           <button
             type="button"

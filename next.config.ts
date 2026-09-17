@@ -8,14 +8,16 @@ const nextConfig: NextConfig = {
       // Image uploads flow through the `uploadAsset` server action; the default
       // 1 MB body cap must cover the largest allowed upload (products = 10 MB).
       bodySizeLimit: "12mb",
+      // Served at remax.co.id/gifts via a reverse proxy to Vercel. The proxy
+      // forwards Vercel's own host in `x-forwarded-host` (not remax.co.id), so
+      // the Server Action CSRF check sees Origin=remax.co.id ≠ Host=<vercel> and
+      // rejects every action in production ("An error occurred in the Server
+      // Components render"). Allowing the public host fixes it. Add the browser-
+      // facing host, not the internal Vercel one.
+      allowedOrigins: ["remax.co.id", "www.remax.co.id"],
     },
   },
   images: {
-    // Allowed `quality` values for next/image. Product photos render at 90 so
-    // catalog cards look sharp on first paint (default 75 looks soft once the
-    // browser has cached the detail page's larger variant). 75 kept for
-    // thumbnails and anything that omits an explicit quality.
-    qualities: [75, 90],
     // Content images are hosted as Hygraph assets.
     remotePatterns: [
       { protocol: "https", hostname: "**.graphassets.com" },

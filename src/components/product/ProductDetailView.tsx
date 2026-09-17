@@ -188,17 +188,6 @@ export function ProductDetailView({
             <div className="mt-3 mb-[14px] text-[13px] font-semibold text-red-500">
               Kombinasi tidak tersedia
             </div>
-          ) : selectionStock !== null ? (
-            <div
-              className={cn(
-                "mt-3 mb-[14px] text-[13px] font-semibold",
-                selectionStock > 0 ? "text-green-600" : "text-red-500",
-              )}
-            >
-              {selectionStock > 0
-                ? `Stok tersedia: ${selectionStock} pcs`
-                : "Stok habis"}
-            </div>
           ) : (
             <div className="mb-[18px]" />
           )}
