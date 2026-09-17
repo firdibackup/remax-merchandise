@@ -1,7 +1,7 @@
 import type { EmailOtpType } from "@supabase/supabase-js";
 import { NextResponse } from "next/server";
 
-import { withBasePath } from "@/lib/constants";
+import { siteOrigin, withBasePath } from "@/lib/constants";
 import { createClient } from "@/lib/supabase/server";
 
 /**
@@ -29,11 +29,13 @@ export async function GET(request: Request): Promise<NextResponse> {
   const next =
     rawNext.startsWith("/") && !rawNext.startsWith("//") ? rawNext : "/";
 
-  // Behind a proxy the public host is the one the user actually sees; `origin`
-  // here is the internal one, so prefer the forwarded host in production.
-  const forwardedHost = request.headers.get("x-forwarded-host");
+  // Served at remax.co.id/gifts via a reverse proxy to Vercel: the request host
+  // (and x-forwarded-host) can be the raw Vercel domain, which would bounce the
+  // user off remax.co.id — and the session cookie, set for remax.co.id, is not
+  // valid there. Redirect to the canonical public origin in production; use the
+  // request origin only in local dev.
   const isLocal = process.env.NODE_ENV === "development";
-  const base = !isLocal && forwardedHost ? `https://${forwardedHost}` : origin;
+  const base = isLocal ? origin : siteOrigin();
 
   // "/" would render as a trailing-slash "/gifts/", costing an extra 308 hop.
   const home = withBasePath("");

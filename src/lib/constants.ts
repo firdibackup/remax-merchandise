@@ -25,6 +25,24 @@ export function withBasePath(path: string): string {
 }
 
 /**
+ * Canonical public origin — scheme + host only, WITHOUT {@link BASE_PATH} —
+ * derived from {@link SITE_URL} (e.g. "https://remax.co.id").
+ *
+ * Server-side post-login redirects are built from this instead of the request
+ * host. The app is served at remax.co.id/gifts via a reverse proxy to Vercel, so
+ * the request host / `x-forwarded-host` seen by the callback can be the raw
+ * Vercel domain — redirecting there would bounce the user off remax.co.id, where
+ * the session cookie (set for remax.co.id) is not even valid.
+ */
+export function siteOrigin(): string {
+  try {
+    return new URL(SITE_URL).origin;
+  } catch {
+    return SITE_URL.replace(/\/+$/, "");
+  }
+}
+
+/**
  * Absolute OAuth redirect target for Supabase `signInWithOAuth`.
  *
  * Supabase redirects the browser to this URL verbatim — it never learns about
