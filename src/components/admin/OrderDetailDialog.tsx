@@ -6,6 +6,7 @@ import * as React from "react";
 import { Modal } from "@/components/admin/Modal";
 import { OrderItemThumb } from "@/components/admin/OrderItemThumb";
 import { StatusBadge } from "@/components/admin/StatusBadge";
+import { withBasePath } from "@/lib/constants";
 import { formatKg, formatPrice } from "@/lib/format";
 import { ORDER_STATUS_META, trackingUrl } from "@/lib/orders/status";
 import type { Order } from "@/types/order";
@@ -240,7 +241,7 @@ export function OrderDetailDialog({
 
           <div className="flex justify-end gap-2 border-t border-admin-border px-5 py-3.5">
             <a
-              href={`/api/admin/orders/${order.id}/form`}
+              href={withBasePath(`/api/admin/orders/${order.id}/form`)}
               className="inline-flex h-9 items-center gap-1.5 rounded-btn border border-admin-border bg-white px-3.5 text-[13px] font-semibold text-gray-600 hover:text-ink"
             >
               Unduh PDF

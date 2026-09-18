@@ -21,6 +21,7 @@ import { OrderDetailDialog } from "@/components/admin/OrderDetailDialog";
 import { OrderItemThumb } from "@/components/admin/OrderItemThumb";
 import { ShippingOverrideDialog } from "@/components/admin/ShippingOverrideDialog";
 import { StatusBadge } from "@/components/admin/StatusBadge";
+import { withBasePath } from "@/lib/constants";
 import { formatPrice } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import type { Order, OrderStatus } from "@/types/order";
@@ -108,7 +109,7 @@ export function OrdersTable({
 
   function pdfLink(o: Order): React.JSX.Element {
     return (
-      <a href={`/api/admin/orders/${o.id}/form`} className={BTN_OUTLINE}>
+      <a href={withBasePath(`/api/admin/orders/${o.id}/form`)} className={BTN_OUTLINE}>
         <FileText className="h-[14px] w-[14px]" />
         PDF
       </a>
