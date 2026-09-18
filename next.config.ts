@@ -18,7 +18,7 @@ const nextConfig: NextConfig = {
     },
   },
   images: {
-    // Content images are hosted as Hygraph assets.
+    unoptimized: true,
     remotePatterns: [
       { protocol: "https", hostname: "**.graphassets.com" },
       { protocol: "https", hostname: "media.graphassets.com" },
